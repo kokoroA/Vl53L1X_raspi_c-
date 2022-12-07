@@ -52,34 +52,35 @@
 #define trace_i2c(...) VL53L1_trace_print_module_function(VL53L1_TRACE_MODULE_NONE, VL53L1_TRACE_LEVEL_NONE, VL53L1_TRACE_FUNCTION_I2C, ##__VA_ARGS__)
 #endif
 
-// #ifndef HAL_I2C_MODULE_ENABLED
-// #warning "HAL I2C module must be enable "
+// // #ifndef HAL_I2C_MODULE_ENABLED
+// // #warning "HAL I2C module must be enable "
+// // #endif
+
+// //#define VL53L0X_pI2cHandle    (&hi2c1)
+
+// /* when not customized by application define dummy one */
+// #ifndef VL53L1_GetI2cBus
+// /** This macro can be overloaded by user to enforce i2c sharing in RTOS context
+//  */
+// #   define VL53L1_GetI2cBus(...) (void)0
 // #endif
 
-//#define VL53L0X_pI2cHandle    (&hi2c1)
-
-/* when not customized by application define dummy one */
-#ifndef VL53L1_GetI2cBus
-/** This macro can be overloaded by user to enforce i2c sharing in RTOS context
- */
-#   define VL53L1_GetI2cBus(...) (void)0
-#endif
-
-#ifndef VL53L1_PutI2cBus
-/** This macro can be overloaded by user to enforce i2c sharing in RTOS context
- */
-#   define VL53L1_PutI2cBus(...) (void)0
-#endif
+// #ifndef VL53L1_PutI2cBus
+// /** This macro can be overloaded by user to enforce i2c sharing in RTOS context
+//  */
+// #   define VL53L1_PutI2cBus(...) (void)0
+// #endif
 
 uint8_t _I2CBuffer[256];
 
+void VL53L1_GetI2cBus(void){};
+void VL53L1_PutI2cBus(void){};
 
 int _I2CWrite(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     int status;
     int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
 
-    // status = HAL_I2C_Master_Transmit(&XNUCLEO53L1A1_hi2c, Dev, pdata, count, i2c_time_out);
-    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,true,i2c_time_out); 
+    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,false,i2c_time_out); 
     // if (status) {
     //     VL6180x_ErrLog("I2C error 0x%x %d len", dev->I2cAddr, len);
     //     //XNUCLEO6180XA1_I2C1_Init(&hi2c1);
@@ -91,8 +92,7 @@ int _I2CRead(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     int status;
     int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
 
-    // status = HAL_I2C_Master_Receive(&XNUCLEO53L1A1_hi2c, Dev|1, pdata, count, i2c_time_out);
-    status = i2c_read_timeout_us(I2C_PORT,Dev|1,pdata,count,true,i2c_time_out);
+    status = i2c_read_timeout_us(I2C_PORT,Dev,pdata,count,false,i2c_time_out);
     // if (status) {
     //     VL6180x_ErrLog("I2C error 0x%x %d len", dev->I2cAddr, len);
     //     //XNUCLEO6180XA1_I2C1_Init(&hi2c1);

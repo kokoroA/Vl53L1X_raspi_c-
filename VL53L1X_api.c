@@ -526,13 +526,13 @@ VL53L1X_ERROR VL53L1X_GetInterMeasurementInMs(uint16_t dev, uint16_t *pIM)
 
 VL53L1X_ERROR VL53L1X_BootState(uint16_t dev, uint8_t *state)
 {
-	// VL53L1X_ERROR status = 0;
-	// uint8_t tmp = 0;
+	VL53L1X_ERROR status = 0;
+	uint8_t tmp = 0;
 
-	// //status |= VL53L1_RdByte(dev,VL53L1_FIRMWARE__SYSTEM_STATUS, &tmp);
-	// *state = tmp;
-	// return status;
-	printf("hello");
+	status |= VL53L1_RdByte(dev,VL53L1_FIRMWARE__SYSTEM_STATUS, &tmp);
+	*state = tmp;
+	return status;
+	// printf("hello");
 }
 
 VL53L1X_ERROR VL53L1X_GetSensorId(uint16_t dev, uint16_t *sensorId)

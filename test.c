@@ -10,15 +10,20 @@
 
 int8_t Status = 0;
 int16_t OffsetValue =0;
-uint16_t dev = 0x52;
+uint16_t dev = 0x29;
 uint16_t distance = 0;
 uint8_t isDataReady = 0;
 uint8_t rangeStatus = 0;
 uint8_t state = 1;
 int sleep_time = 2000;
-int ms = 2;
+int ms = 200;
 
 int main (void) {
+    uint8_t byte_data_read[16]; //readした値の格納用
+    uint8_t byte_data_write[16];//書き込む値の格納用
+    byte_data_write[0] = 2; 
+    byte_data_write[1] = 1;
+
     stdio_init_all();
     i2c_init(I2C_PORT,i2C_CLOCK);//ハードウェアの初期化
     gpio_set_function(SDA_PIN,GPIO_FUNC_I2C);//GPIO機能をi2cに選択(SDA)
@@ -28,15 +33,18 @@ int main (void) {
     // /* Platform Initialization code here*/
     // /* Wait for device booted*/
 
-    // while(1){
-    //     printf("finish setup\n");
-    // }
+
+
+
+    // Status = i2c_write_timeout_us(I2C_PORT,dev,byte_data_write,2,false,600); 
+    // Status = i2c_read_timeout_us(I2C_PORT,dev,byte_data_read,1,false,600);
 
     while(state) {
         Status = VL53L1X_BootState(dev, &state);
         sleep_ms(ms);
-        printf(Status);
+        printf("%d\n",Status);
     };
+    
 
     // /* Sensor Initialization */
     // Status = VL53L1X_SensorInit(dev);
