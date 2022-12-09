@@ -9,20 +9,27 @@
 // #define SCL_PIN 27  // GP26 = Pin.32 = SCL
 
 int8_t Status = 0;
-int16_t OffsetValue =0;
+int16_t OffsetValue = 0;
 uint16_t dev = 0x29;
 uint16_t distance = 0;
 uint8_t isDataReady = 0;
 uint8_t rangeStatus = 0;
 uint8_t state = 1;
+uint8_t tmp = 0;
 int sleep_time = 2000;
 int ms = 200;
 
 int main (void) {
     uint8_t byte_data_read[16]; //readした値の格納用
     uint8_t byte_data_write[16];//書き込む値の格納用
+    uint8_t _I2CBuffer[256];
     byte_data_write[0] = 2; 
     byte_data_write[1] = 1;
+    uint16_t index = 0x00E5;
+    uint16_t test =  0x010F;
+    _I2CBuffer[0] = index>>8;
+	_I2CBuffer[1] = index&0xFF;
+    uint8_t byteREAD[16];
 
     stdio_init_all();
     i2c_init(I2C_PORT,i2C_CLOCK);//ハードウェアの初期化
@@ -33,8 +40,7 @@ int main (void) {
     // /* Platform Initialization code here*/
     // /* Wait for device booted*/
 
-
-
+    sleep_ms(ms);
 
     // Status = i2c_write_timeout_us(I2C_PORT,dev,byte_data_write,2,false,600); 
     // Status = i2c_read_timeout_us(I2C_PORT,dev,byte_data_read,1,false,600);
@@ -42,16 +48,20 @@ int main (void) {
     while(state) {
         Status = VL53L1X_BootState(dev, &state);
         sleep_ms(ms);
-        printf("%d\n",Status);
+        printf("%d\n",state);
     };
+
+    while(1){
+        printf("%d\n",state);
+    }
     
 
     // /* Sensor Initialization */
     // Status = VL53L1X_SensorInit(dev);
+
     // /* Modify the default configuration */
     // // Status = VL53L1X_SetInterMeasurementPeriod();
     // Status = VL53L1X_SetOffset(dev,OffsetValue);
-    // printf("Finish intialize\n");
 
     // /* ranging loop */
     // while(1){

@@ -78,25 +78,24 @@ void VL53L1_PutI2cBus(void){};
 
 int _I2CWrite(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     int status;
-    int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
+    // int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
+    // int i2c_time_out = 600;
 
-    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,false,i2c_time_out); 
-    // if (status) {
-    //     VL6180x_ErrLog("I2C error 0x%x %d len", dev->I2cAddr, len);
-    //     //XNUCLEO6180XA1_I2C1_Init(&hi2c1);
-    // }
+    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,false,600); 
+    if(status == count){
+        status = 0;
+    };
     return status;
 }
 
 int _I2CRead(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     int status;
-    int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
+    // int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
 
-    status = i2c_read_timeout_us(I2C_PORT,Dev,pdata,count,false,i2c_time_out);
-    // if (status) {
-    //     VL6180x_ErrLog("I2C error 0x%x %d len", dev->I2cAddr, len);
-    //     //XNUCLEO6180XA1_I2C1_Init(&hi2c1);
-    // }
+    status = i2c_read_timeout_us(I2C_PORT,Dev,pdata,count,false,600);
+    if(status == count){
+        status = 0;
+    };
     return status;
 }
 
@@ -213,7 +212,7 @@ VL53L1_Error VL53L1_RdByte(uint16_t Dev, uint16_t index, uint8_t *data) {
 
 	_I2CBuffer[0] = index>>8;
 	_I2CBuffer[1] = index&0xFF;
-    VL53L1_GetI2cBus();
+    // VL53L1_GetI2cBus();
     status_int = _I2CWrite(Dev, _I2CBuffer, 2);
     if( status_int ){
         Status = VL53L1_ERROR_CONTROL_INTERFACE;
@@ -224,7 +223,7 @@ VL53L1_Error VL53L1_RdByte(uint16_t Dev, uint16_t index, uint8_t *data) {
         Status = VL53L1_ERROR_CONTROL_INTERFACE;
     }
 done:
-    VL53L1_PutI2cBus();
+    // VL53L1_PutI2cBus();
     return Status;
 }
 
