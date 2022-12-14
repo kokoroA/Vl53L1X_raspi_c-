@@ -11,6 +11,13 @@
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
 #include "class/cdc/cdc_device.h"
+#include <string.h>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <stddef.h>
 
 #define I2C_TIME_OUT_BASE   10
 #define I2C_TIME_OUT_BYTE   1

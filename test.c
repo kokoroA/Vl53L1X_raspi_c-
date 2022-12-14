@@ -14,7 +14,7 @@ uint16_t dev = 0x29;
 uint16_t distance = 0;
 uint8_t isDataReady = 0;
 uint8_t rangeStatus = 0;
-uint8_t state = 1;
+uint8_t state = 0;
 uint8_t tmp = 0;
 int sleep_time = 2000;
 int ms = 200;
@@ -45,19 +45,19 @@ int main (void) {
     // Status = i2c_write_timeout_us(I2C_PORT,dev,byte_data_write,2,false,600); 
     // Status = i2c_read_timeout_us(I2C_PORT,dev,byte_data_read,1,false,600);
 
-    while(state) {
+    while((state&1) == 0 ) {
         Status = VL53L1X_BootState(dev, &state);
         sleep_ms(ms);
-        printf("%d\n",state);
+        printf("state : %d\n",state&1);
+        printf("Status : %d\n",Status);
     };
 
-    while(1){
-        printf("%d\n",state);
-    }
-    
-
     // /* Sensor Initialization */
-    // Status = VL53L1X_SensorInit(dev);
+    Status = VL53L1X_SensorInit(dev);
+
+    while(1){
+        printf("Status(sensor init) : %d\n",Status);
+    }
 
     // /* Modify the default configuration */
     // // Status = VL53L1X_SetInterMeasurementPeriod();
@@ -72,10 +72,7 @@ int main (void) {
     //     Status = VL53L1X_GetRangeStatus(dev,&rangeStatus);
     //     Status = VL53L1X_GetDistance(dev,&distance);
     //     Status = VL53L1X_ClearInterrupt(dev);
-    //     printf(Status);
-    //     printf("Hello\n");
-    // }
-    // while(1){
-    //     printf("Hello\n");
+    //     printf(" Status(ranging loop) : %d\n ",Status);
+    //     printf("distance : %d\n",distance);
     // }
 }

@@ -1,13 +1,7 @@
 // #include "platform/vl53l1_platform.h"
 #include "vl53l1_platform.h"
 #include "VL53L1X_api.h"
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <stddef.h>
+
 
 
 typedef unsigned int uint;

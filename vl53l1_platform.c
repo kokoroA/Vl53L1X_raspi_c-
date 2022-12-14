@@ -1,4 +1,3 @@
-
 /* 
 * This file is part of VL53L1 Platform 
 * 
@@ -38,13 +37,9 @@
 // #include "vl53l1_api.h"
 #include "vl53l1_platform_user_config.h"
 // #include "stm32xxx_hal.h"
-#include <string.h>
-#include <time.h>
-#include <math.h>
 #include "vl53l1_error_codes.h"
 // #include "X-NUCLEO-53L1A1.h"
-#include <stdio.h>
-#include <unistd.h>
+
 
 
 #ifdef VL53L1_LOG_ENABLE
@@ -81,10 +76,12 @@ int _I2CWrite(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     // int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
     // int i2c_time_out = 600;
 
-    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,false,600); 
+    status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,true,600); 
+    // printf("%d\n status for write :" , status);
     if(status == count){
         status = 0;
     };
+    sleep_ms(2);
     return status;
 }
 
@@ -93,9 +90,11 @@ int _I2CRead(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     // int i2c_time_out = I2C_TIME_OUT_BASE+ count* I2C_TIME_OUT_BYTE;
 
     status = i2c_read_timeout_us(I2C_PORT,Dev,pdata,count,false,600);
+    // printf("%d pdata" , pdata);
     if(status == count){
         status = 0;
     };
+
     return status;
 }
 
