@@ -77,10 +77,11 @@ int _I2CWrite(uint16_t Dev, uint8_t *pdata, uint32_t count) {
     // int i2c_time_out = 600;
 
     status = i2c_write_timeout_us(I2C_PORT,Dev,pdata,count,true,600); 
-    // printf("%d\n status for write :" , status);
+    //printf("status for write(before if) : %d\n" , status);
     if(status == count){
         status = 0;
     };
+    //printf("status for write(after if) : %d\n" , status);
     sleep_ms(2);
     return status;
 }

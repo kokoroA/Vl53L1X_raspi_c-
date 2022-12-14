@@ -20,16 +20,16 @@ int sleep_time = 2000;
 int ms = 200;
 
 int main (void) {
-    uint8_t byte_data_read[16]; //readした値の格納用
-    uint8_t byte_data_write[16];//書き込む値の格納用
-    uint8_t _I2CBuffer[256];
-    byte_data_write[0] = 2; 
-    byte_data_write[1] = 1;
-    uint16_t index = 0x00E5;
-    uint16_t test =  0x010F;
-    _I2CBuffer[0] = index>>8;
-	_I2CBuffer[1] = index&0xFF;
-    uint8_t byteREAD[16];
+    // uint8_t byte_data_read[16]; //readした値の格納用
+    // uint8_t byte_data_write[16];//書き込む値の格納用
+    // uint8_t _I2CBuffer[256];
+    // byte_data_write[0] = 2; 
+    // byte_data_write[1] = 1;
+    // uint16_t index = 0x00E5;
+    // uint16_t test =  0x010F;
+    // _I2CBuffer[0] = index>>8;
+	// _I2CBuffer[1] = index&0xFF;
+    // uint8_t byteREAD[16];
 
     stdio_init_all();
     i2c_init(I2C_PORT,i2C_CLOCK);//ハードウェアの初期化
@@ -55,24 +55,32 @@ int main (void) {
     // /* Sensor Initialization */
     Status = VL53L1X_SensorInit(dev);
 
-    while(1){
-        printf("Status(sensor init) : %d\n",Status);
-    }
+    // while(1){
+    //     printf("Status(sensor init) : %d\n",Status);
+    // }
 
     // /* Modify the default configuration */
     // // Status = VL53L1X_SetInterMeasurementPeriod();
     // Status = VL53L1X_SetOffset(dev,OffsetValue);
 
     // /* ranging loop */
-    // while(1){
-    //     while(isDataReady==0){
-    //         Status = VL53L1X_CheckForDataReady (dev, &isDataReady);
-    //     }
-    //     isDataReady =0;
-    //     Status = VL53L1X_GetRangeStatus(dev,&rangeStatus);
-    //     Status = VL53L1X_GetDistance(dev,&distance);
-    //     Status = VL53L1X_ClearInterrupt(dev);
-    //     printf(" Status(ranging loop) : %d\n ",Status);
-    //     printf("distance : %d\n",distance);
-    // }
+    while(1){
+        while(isDataReady==0){
+            Status = VL53L1X_CheckForDataReady(dev, &isDataReady);
+            printf("--------------------------------------\n");
+            printf("Status (isDataReady loop) : %d\n", Status);
+            printf("isDataReady (isDataReady loop) : %d\n", isDataReady);
+            printf("--------------------------------------\n");
+        }
+        while(1){
+            printf("Status(ranging loop) : %d\n",Status);
+            printf("isDataReady (ranging loop) : %d\n", isDataReady);
+        }
+        // isDataReady =0;
+        // Status = VL53L1X_GetRangeStatus(dev,&rangeStatus);
+        // Status = VL53L1X_GetDistance(dev,&distance);
+        // Status = VL53L1X_ClearInterrupt(dev);
+        // printf(" Status(ranging loop) : %d\n ",Status);
+        // printf("distance : %d\n",distance);
+    }
 }

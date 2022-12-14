@@ -270,6 +270,7 @@ VL53L1X_ERROR VL53L1X_GetInterruptPolarity(uint16_t dev, uint8_t *pInterruptPola
 	status |= VL53L1_RdByte(dev, GPIO_HV_MUX__CTRL, &Temp);
 	Temp = Temp & 0x10;
 	*pInterruptPolarity = !(Temp>>4);
+	//printf("Temp(getInterrupt) : %d\n",pInterruptPolarity);
 	return status;
 }
 
@@ -298,6 +299,8 @@ VL53L1X_ERROR VL53L1X_CheckForDataReady(uint16_t dev, uint8_t *isDataReady)
 	status |= VL53L1X_GetInterruptPolarity(dev, &IntPol);
 	status |= VL53L1_RdByte(dev, GPIO__TIO_HV_STATUS, &Temp);
 	/* Read in the register to check if a new value is available */
+	//printf("status (CheckForDataReady) : %d\n" , status);
+	//printf("Temp and IntPol : %d , %d \n", (Temp&1),IntPol);
 	if (status == 0){
 		if ((Temp & 1) == IntPol)
 			*isDataReady = 1;
