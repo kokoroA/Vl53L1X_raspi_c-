@@ -18,6 +18,7 @@ uint8_t state = 0;
 uint8_t tmp = 0;
 int sleep_time = 2000;
 int ms = 200;
+uint64_t start_time,current_time;
 
 int main (void) {
     // uint8_t byte_data_read[16]; //readした値の格納用
@@ -48,8 +49,8 @@ int main (void) {
     while((state&1) == 0 ) {
         Status = VL53L1X_BootState(dev, &state);
         sleep_ms(ms);
-        printf("state : %d\n",state&1);
-        printf("Status : %d\n",Status);
+        // printf("state : %d\n",state&1);
+        // printf("Status : %d\n",Status);
     };
 
     // /* Sensor Initialization */
@@ -63,13 +64,15 @@ int main (void) {
     // // Status = VL53L1X_SetInterMeasurementPeriod();
     // Status = VL53L1X_SetOffset(dev,OffsetValue);
     Status = VL53L1X_SetDistanceMode(dev,2);
-    Status = VL53L1X_SetTimingBudgetInMs(dev,20);
-    Status = VL53L1X_SetInterMeasurementInMs(dev,20);
+    Status = VL53L1X_SetTimingBudgetInMs(dev,500);
+    Status = VL53L1X_SetInterMeasurementInMs(dev,500);
 
     //Enable the ranging
     Status = VL53L1X_StartRanging(dev);
 
     // /* ranging loop */
+    start_time = time_us_64();
+    current_time = start_time;
     while(1){
         while(isDataReady==0){
             Status = VL53L1X_CheckForDataReady(dev, &isDataReady);
@@ -87,6 +90,8 @@ int main (void) {
         Status = VL53L1X_GetDistance(dev,&distance);
         Status = VL53L1X_ClearInterrupt(dev);
         // printf(" Status(ranging loop) : %d\n ",Status);
-        printf("distance : %d\n",distance);
+        printf("%9.6f %4d\n",(current_time-start_time)/1000000.0,distance);
+        current_time = time_us_64();
+        // printf("distance : %d\n",distance);
     }
 }
