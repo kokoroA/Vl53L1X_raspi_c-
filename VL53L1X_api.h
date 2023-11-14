@@ -118,6 +118,12 @@ typedef int8_t VL53L1X_ERROR;
 #define VL53L1_IDENTIFICATION__MODEL_ID                     0x010F
 #define VL53L1_ROI_CONFIG__MODE_ROI_CENTRE_SPAD				0x013E
 
+#define VL53L0X_REG_RESULT_RANGE_STATUS             0x14
+#define VL53L0X_REG_SYSRANGE_START                  0x00
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 /****************************************
  * PRIVATE define do not edit
  ****************************************/
@@ -388,5 +394,9 @@ VL53L1X_ERROR VL53L1X_GetSigmaThreshold(uint16_t dev, uint16_t *signal);
  * without sensor ranging activity for an extended period.
  */
 VL53L1X_ERROR VL53L1X_StartTemperatureUpdate(uint16_t dev);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,4 +1,5 @@
 /*
+
  Copyright (c) 2017, STMicroelectronics - All Rights Reserved
 
  This file : part of VL53L1 Core and : dual licensed,
@@ -534,6 +535,7 @@ VL53L1X_ERROR VL53L1X_BootState(uint16_t dev, uint8_t *state)
 
 	status |= VL53L1_RdByte(dev,VL53L1_FIRMWARE__SYSTEM_STATUS, &tmp);
 	*state = tmp;
+	
 	return status;
 }
 

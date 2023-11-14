@@ -66,6 +66,11 @@
 #ifndef _CALIBRATION_H_
 #define _CALIBRATION_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /**
  * @brief This function performs the offset calibration.\n
  * The function returns the offset value found and programs the offset compensation into the device.
@@ -88,5 +93,9 @@ int8_t VL53L1X_CalibrateOffset(uint16_t dev, uint16_t TargetDistInMm, int16_t *o
  * @return xtalk pointer contains the xtalk value found in cps (number of photons in count per second)
  */
 int8_t VL53L1X_CalibrateXtalk(uint16_t dev, uint16_t TargetDistInMm, uint16_t *xtalk);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

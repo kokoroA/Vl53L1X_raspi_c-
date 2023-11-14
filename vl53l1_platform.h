@@ -40,6 +40,7 @@ typedef struct {
 
 typedef int8_t VL53L1X_ERROR;
 typedef int8_t VL53L1_Error;
+typedef unsigned char byte;
 
 typedef VL53L1_Dev_t *VL53L1_DEV;
 
@@ -107,6 +108,9 @@ int8_t VL53L1_RdDWord(
 int8_t VL53L1_WaitMs(
 		uint16_t dev,
 		int32_t       wait_ms);
+
+uint16_t makeuint16(int lsb,int msb);	
+void read_block_data_at(uint16_t dev,byte reg,int sz,uint8_t (*gbuf)[16]);
 
 #ifdef __cplusplus
 }
